@@ -1,22 +1,154 @@
 <!DOCTYPE html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>A Letter for You</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="intro" id="introText">
-      i hope you read this, even if it's too late.
-    </div>
-    <button class="btn" onclick="showLetter()">Read it</button>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<title>For Rania 💛</title>
 
-    <div class="letter" id="letterBox">
-      <p id="typedText"></p>
-      <img src="ttd.png" alt="Signature" class="signature" />
-    </div>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+}
 
-    <script src="script.js"></script>
-  </body>
+/* Fade effect */
+.fade {
+    animation: fadeIn 2s ease forwards;
+}
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+/* Button */
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #ff4d6d;
+    color: white;
+    margin-top: 20px;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(100vh); opacity:0;}
+    50% {opacity:1;}
+    100% { transform: translateY(-10vh); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="daylight.mp3" type="audio/mpeg">
+</audio>
+
+<div id="scene" class="fade">
+    <h1>Hi Rania 💛</h1>
+    <p>Click to start…</p>
+</div>
+
+<script>
+const music = document.getElementById("bgMusic");
+const scene = document.getElementById("scene");
+
+// 🎵 Start + fade in music
+function startMovie() {
+    music.volume = 0;
+    music.play().then(() => {
+        let vol = 0;
+        const fade = setInterval(() => {
+            if (vol < 1) {
+                vol += 0.05;
+                music.volume = vol;
+            } else clearInterval(fade);
+        }, 200);
+    }).catch(()=>{});
+
+    introScene();
+}
+
+document.body.addEventListener("click", startMovie, { once: true });
+
+// 🎬 Scene 1
+function introScene() {
+    scene.innerHTML = "<h1 class='fade'>I made something for you…</h1>";
+    
+    setTimeout(() => {
+        scene.innerHTML = "<h1 class='fade'>Because you mean a lot to me 💛</h1>";
+    }, 3000);
+
+    setTimeout(questionScene, 6000);
+}
+
+// 🎬 Scene 2 (question)
+function questionScene() {
+    scene.innerHTML = `
+        <h1 class="fade">Awak Sayang Saya Tak? 🥺</h1>
+        <button onclick="yesScene()">Sayang 💛</button>
+        <button onclick="noScene()" id="noBtn">Tak 😢</button>
+    `;
+
+    const noBtn = document.getElementById("noBtn");
+    noBtn.addEventListener("mouseover", () => {
+        noBtn.style.position = "absolute";
+        noBtn.style.left = Math.random()*80 + "%";
+        noBtn.style.top = Math.random()*80 + "%";
+    });
+}
+
+// 🎬 No scene
+function noScene() {
+    scene.innerHTML = `
+        <h1 class="fade">Alaa jangan macam tu 🥺</h1>
+        <p class="fade">Cuba fikir lagi sekali… 💛</p>
+        <button onclick="questionScene()">Ulang</button>
+    `;
+}
+
+// 💖 Heart generator
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💛";
+    heart.style.left = Math.random()*100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart, 400);
+
+// 🎬 Final scene
+function yesScene() {
+    scene.innerHTML = "<h1 class='fade'>I once believed love would be burning red…</h1>";
+
+    setTimeout(() => {
+        scene.innerHTML = "<h1 class='fade'>But with you… it's golden 💛</h1>";
+    }, 3000);
+
+    setTimeout(() => {
+        scene.innerHTML = `
+            <h1 class="fade">I love you, Rania 💛</h1>
+            <p class="fade">– Dari saya ✨</p>
+        `;
+    }, 6000);
+}
+</script>
+
+</body>
 </html>
